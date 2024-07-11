@@ -25,30 +25,33 @@
   </div>
 </div>
 
+    <div class="container border_radius">
+        <div class="background mt-3">
+            <div class="noticias text-center mt-4">
+            <h1 style="">+ Notícias</h1>
+            </div>
 
-  <div class="background mt-3">
-    <div class="noticias text-center mt-4">
-      <h1 class="text-black" style="margin-top: 100px;">+ Notícias</h1>
+            <div class="container mt-5">
+            <div class="row">
+                @foreach ($posts as $post)
+                    <div class="col-md-3 mb-4">
+                        <div class="card h-100">
+                            <a href="{{ route('post', $post->id) }}">
+                                <img src="{{ asset('.' . $post->image) }}" class="card-img-top" alt="{{ $post->title }}">
+                            </a>
+                            <div class="card-body">
+                                <h4 class="card-title text-truncate">{{ $post->title }}</h4>
+                                <div class="bg-gray-800 py-2 rounded">
+                                    <a href="{{ route('post', $post->id) }}" class="btn btn-outline-black">Saiba Mais</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+            </div>
+        </div>
     </div>
-
-    <div class="container mt-5">
-      <div class="row">
-          @foreach ($posts as $post)
-              <div class="col-md-3 mb-4">
-                  <div class="card h-100">
-                      <a href="{{ route('post', $post->id) }}">
-                          <img src="{{ asset('.' . $post->image) }}" class="card-img-top" alt="{{ $post->title }}">
-                      </a>
-                      <div class="card-body">
-                          <h4 class="card-title">{{ $post->title }}</h4>
-                          <p class="card-text">Saiba Mais...</p>
-                      </div>
-                  </div>
-              </div>
-          @endforeach
-      </div>
-    </div>
-  </div>
 
 </div>
 @endsection

@@ -13,9 +13,6 @@
 
     <script src="https://cdn.tiny.cloud/1/yif52dkl8qftmxphntxceoce40ortglrm07rw60srkkeihtl/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 
-
-
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.theme.min.css">
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
@@ -27,18 +24,43 @@
             <div class="logo">
                 <img src="{{ asset('./images/choquei.png') }}" alt="Logo">
             </div>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link instagram-icon" href="https://www.instagram.com" target="_blank">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent container">
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    <li class="nav-item row align-items-center">
+                        <a class="nav-link col" href="https://www.instagram.com" target="_blank">
                             <i class="fa-brands fa-instagram"></i>
                         </a>
                         @auth 
                             @if(auth()->user()->isAdmin)
-                                <a href="{{ route('dashboard') }}">Dashboard</a>
+                            <div class="dropdown nav-link instagram-icon col">
+                                <button class="btn btn_user dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-regular fa-user"></i>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="{{ route('dashboard') }}">Dashboard</a></li>
+                                    <li>
+                                        <form method="POST" action="{{ route('logout') }}">
+                                            @csrf
+                
+                                            <a class="dropdown-item" :href="route('logout')"
+                                                    onclick="event.preventDefault();
+                                                                this.closest('form').submit();">
+                                                {{ __('Sair') }}
+                                            </a>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
                             @endif
                         @else 
-                            <a href="{{ route('dashboard') }}">Entrar</a>
+                            <div class="dropdown nav-link instagram-icon col">
+                                <button class="btn btn_user dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-regular fa-user"></i>
+                                </button>
+                                <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ route('dashboard') }}">Entrar</a></li>
+                                </ul>
+                            </div>
                         @endauth
                     </li>
                 </ul>
