@@ -88,5 +88,25 @@
           ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
         });
     </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search-input');
+            const postsContainer = document.getElementById('posts-container');
+            const postItems = postsContainer.getElementsByClassName('post-item');
+
+            searchInput.addEventListener('input', function() {
+                const searchText = searchInput.value.toLowerCase();
+                Array.from(postItems).forEach(function(postItem) {
+                    const title = postItem.getAttribute('data-title').toLowerCase();
+                    if (title.includes(searchText)) {
+                        postItem.style.display = 'block';
+                    } else {
+                        postItem.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

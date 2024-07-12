@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Events\PostCreated;
 use App\Models\Post;
 
 use Illuminate\Http\Request;
@@ -72,7 +74,8 @@ class PostController extends Controller
            'body' => $request->body
         ]);
 
-        //return redirect()->route('posts.edit',$post);
+        event(new PostCreated($post));
+
         return redirect()->route('posts.index');
     }
 
