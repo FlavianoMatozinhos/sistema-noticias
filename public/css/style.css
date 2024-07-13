@@ -133,6 +133,7 @@ h6,
 }
 
 .title_image {
+    width: 370px;
     padding: 8px 28px;
     border-radius: 0px 0px 15px 15px;
     background-color: white;
@@ -205,6 +206,29 @@ p {
 
 .form-inline .form-control {
     margin-right: 10px;
+}
+
+/* Visualizar Noticia */
+.home_principal_noticia {
+    display: flex;
+    margin-top: 136px;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.imagem_principal_noticia {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.titulo_principal_noticia {
+    padding: 46px;
+    background-color: white;
+    text-align: left;
+    width: 600px;
+    height: auto;
+    max-width: 600px;
 }
 
 @media (max-width: 1400px) {

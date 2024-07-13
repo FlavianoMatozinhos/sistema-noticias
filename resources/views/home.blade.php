@@ -49,7 +49,33 @@
                 </div>
             </div>
 
-            <div class="container mt-5">
+            <div class="container">
+                <div class="row">
+                    @foreach ($posts as $post)
+                        <div class="col-4" style="display: flex; flex-wrap: wrap; justify-content: center; margin-top: 30px;">
+                            <div class="row box" style="width: 100%; margin-bottom: 20px;">
+                                <div class="col-2 padding">
+                                    <img class="img_principal" src="{{ asset('./images/choquei.png') }}" alt="Logo" style="">
+                                </div>
+                                <div class="col-10"></div>
+                                <div class="col-12 padding">
+                                    <a href="{{ route('post', $post->id) }}">
+                                        <img src="{{ asset('.' . $post->image) }}" alt="{{ $post->title }}" style="width: 370px;height: 300px;">
+                                    </a>
+                                </div>
+                                <div class="col-12 title_image">
+                                    <h4 class="card-title text-truncate">{{ $post->title }}</h4>
+                                    <div class="bg-gray-800 py-2 rounded">
+                                        <a href="{{ route('post', $post->id) }}" class="btn btn-outline-dark">Saiba Mais</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+
+            {{-- <div class="container mt-5">
                 <div class="row" id="posts-container">
                     @foreach ($posts as $post)
                         <div class="col-md-3 mb-4 post-item" data-title="{{ $post->title }}">
@@ -67,7 +93,7 @@
                         </div>
                     @endforeach
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 </div>
