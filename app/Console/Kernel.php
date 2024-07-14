@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Jobs\ProcessVideoChunk;
+use App\Models\Post;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,7 +17,17 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $pendingVideo = Post::where('status', 'processing')->first();
+
+        if ($pendingVideo) {
+            $id =  $pendingVideo->id;
+
+            $videoPath = 'videos/' . $pendingVideo->temporary_video;
+
+            $fileName = $pendingVideo->temporary_video;
+
+            $schedule->job(new ProcessVideoChunk($videoPath, $fileName, $id))->everyMinute();
+        }
     }
 
     /**

@@ -14,6 +14,10 @@ class Post extends Model
         'title',
         'slug',
         'body',
+        'status',
+        'temporary_video',
+        'title_video',
+        'video_locale'
     ];
 
     public function user() {
