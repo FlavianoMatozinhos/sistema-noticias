@@ -11,8 +11,7 @@ use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use App\Jobs\ProcessVideoChunk;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use FFMpeg\Format\Video\X264;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
+use Illuminate\Support\Facades\File;
 
 
 class PostController extends Controller
@@ -29,80 +28,113 @@ class PostController extends Controller
     {
         $request->validate([
             'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'title' => 'required',
-            'slug' => 'required |unique:posts,slug,' . $post->id,
+            'slug' => 'required|unique:posts,slug,' . $post->id,
             'body' => 'required',
         ]);
-
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $name = time() . '.' . $image->getClientOriginalExtension();
-            $destinationPath = public_path('/images');
-            $image->move($destinationPath, $name);
-            $imagePath = '/images/' . $name;
-        } else {
-            $imagePath = $post->image;
+    
+        DB::beginTransaction();
+    
+        try {
+            // Atualizar imagem principal
+            if ($request->hasFile('image')) {
+                // Deletar imagem principal anterior
+                if ($post->main_image) {
+                    $mainImagePath = public_path('storage/' . $post->main_image);
+                    if (File::exists($mainImagePath)) {
+                        File::delete($mainImagePath);
+                    }
+                }
+    
+                // Salvar nova imagem principal
+                $mainImagePath = $request->file('image')->store('images', 'public');
+                $post->main_image = $mainImagePath;
+            }
+    
+            // Atualizar outras propriedades do post
+            $post->update([
+                'title' => $request->title,
+                'slug' => $request->slug,
+                'body' => $request->body,
+                'main_image' => $post->main_image, // Atualizar com a nova imagem principal
+            ]);
+    
+            // Atualizar imagens associadas
+            if ($request->hasFile('images')) {
+                // Deletar imagens anteriores
+                foreach ($post->images as $image) {
+                    Storage::disk('public')->delete($image->path);
+                    $image->delete();
+                }
+    
+                // Salvar novas imagens
+                foreach ($request->file('images') as $image) {
+                    $path = $image->store('images', 'public');
+                    $post->images()->create(['path' => $path]);
+                }
+            }
+    
+            // Atualizar vídeo associado, se necessário
+            if ($request->hasFile('video')) {
+                $this->uploadLargeFiles($request, $post->id);
+            }
+    
+            DB::commit();
+    
+            return redirect()->route('posts.index')->with('success', 'Post atualizado com sucesso!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+    
+            Log::error('Erro ao atualizar post: ' . $e->getMessage());
+    
+            return redirect()->route('posts.index')->with('error', 'Ocorreu um erro ao atualizar o post. Tente novamente.');
         }
-
-        $post->update([
-           'image' => $imagePath, 
-           'title' => $request->title,
-           'slug' => $request->slug,
-           'body' => $request->body
-        ]);
-
-        return redirect()->route('posts.index');
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'title' => 'required',
-            'slug' => 'required |unique:posts,slug',
+            'slug' => 'required|unique:posts,slug',
             'body' => 'required',
         ]);
-
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $name = time() . '.' . $image->getClientOriginalExtension();
-            $destinationPath = public_path('/images');
-            $image->move($destinationPath, $name);
-            $imagePath = '/images/' . $name;
-        } else {
-            $imagePath = null;
-        }
-
+    
         DB::beginTransaction();
-
+    
         try {
-        $post = $request->user()->posts()->create([
-           'image' => $imagePath, 
-           'title' => $request->title,
-           'slug' => $request->slug,
-           'body' => $request->body
-        ]);
-
-        $this->uploadLargeFiles($request, $post->id);
-
-        event(new PostCreated($post));
-
-        DB::commit();
-
-        return redirect()->route('posts.index');
-        } catch (\Exception $e) {
-            DB::rollBack();
-        
-            dd($e);
-            // Excluir a imagem salva em caso de falha
-            if ($imagePath) {
-                @unlink(public_path($imagePath));
+            // Upload da imagem principal
+            $mainImagePath = $request->file('image')->store('images', 'public');
+    
+            $post = $request->user()->posts()->create([
+                'title' => $request->title,
+                'slug' => $request->slug,
+                'body' => $request->body,
+                'main_image' => $mainImagePath,
+            ]);
+    
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
+                    $path = $image->store('images', 'public');
+                    $post->images()->create(['path' => $path]);
+                }
             }
     
-            // Registrar o erro para depuração
+            DB::commit();
+    
+            $this->uploadLargeFiles($request, $post->id);
+    
+            event(new PostCreated($post));
+    
+            return redirect()->route('posts.index');
+        } catch (\Exception $e) {
+            DB::rollBack();
+    
             Log::error('Erro ao criar post: ' . $e->getMessage());
     
-            // return redirect()->route('posts.index')->with('error', 'Ocorreu um erro ao criar o post. Tente novamente.');
+            return redirect()->route('posts.index')->with('error', 'Ocorreu um erro ao criar o post. Tente novamente.');
         }
     }
 
@@ -121,8 +153,47 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
-        $post->delete();
-        return back();
+        DB::beginTransaction();
+    
+        try {
+            // Deletar imagem principal
+            if ($post->main_image) {
+                $mainImagePath = public_path('storage/' . $post->main_image);
+                if (File::exists($mainImagePath)) {
+                    File::delete($mainImagePath);
+                }
+            }
+    
+            // Deletar imagens associadas
+            foreach ($post->images as $image) {
+                $imagePath = public_path('storage/' . $image->path);
+                if (File::exists($imagePath)) {
+                    File::delete($imagePath);
+                }
+                $image->delete();
+            }
+    
+            // Deletar vídeo associado
+            if ($post->video_locale) {
+                $videoPath = public_path('storage/videos/' . $post->video_locale);
+                if (File::exists($videoPath)) {
+                    File::delete($videoPath);
+                }
+            }
+    
+            // Deletar post
+            $post->delete();
+    
+            DB::commit();
+    
+            return back()->with('success', 'Post deletado com sucesso.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+    
+            Log::error('Erro ao deletar post: ' . $e->getMessage());
+    
+            return back()->with('error', 'Ocorreu um erro ao deletar o post. Tente novamente.');
+        }
     }
 
     public function uploadLargeFiles(Request $request, $postId)

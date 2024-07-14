@@ -39,9 +39,18 @@
           {!! nl2br($post->body) !!}
       </h6>
     </div>
-    <div class="d-flex justify-content-center">
-        <img src="{{ asset('.' . $post->image) }}" alt="Imagem Principal" width="550" class="img-fluid">
-    </div>
+    @if ($post->images->count() > 0)
+      <div class="mt-4">
+          <h4>Imagens da Notícia</h4>
+          <div class="row">
+              @foreach ($post->images as $image)
+                  <div class="col-6 mt-3">
+                      <img src="{{ asset('storage/' . $image->path) }}" alt="Imagem {{ $loop->index }}" class="img-fluid">
+                  </div>
+              @endforeach
+          </div>
+      </div>
+    @endif
   </div>
 </div>
 @endsection

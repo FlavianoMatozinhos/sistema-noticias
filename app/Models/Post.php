@@ -10,19 +10,23 @@ class Post extends Model
     use HasFactory;
 
     protected $fillable = [
-        'image',
         'title',
         'slug',
         'body',
+        'main_image',
         'status',
         'temporary_video',
         'title_video',
         'video_locale'
     ];
 
-    public function user() {
-
+    public function user() 
+    {
         return $this->belongsTo(User::class);
+    }
 
+    public function images()
+    {
+        return $this->hasMany(PostImage::class);
     }
 }

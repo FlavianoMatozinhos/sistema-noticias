@@ -28,7 +28,7 @@
                 </div>
                 <div class="col-10"></div>
                 <div class="col-12 padding">
-                    <img src="{{ asset('.' . $latestPost->image) }}" alt="Imagem Principal" class="img-fluid">
+                    <img src="{{ asset('storage/' . $latestPost->main_image) }}" alt="Imagem Principal" class="img-fluid">
                 </div>
                 <div class="col-12 title_image">
                     <h5 class="text-break text-truncate">{{ $latestPost->title }}</h5>
@@ -45,7 +45,7 @@
                     <input id="search-input" class="form-control" type="search" placeholder="Search" aria-label="Search">
                 </div>
                 <div class="col-7 text-left">
-                    <h1 class="text-white">+ notícias</h1>
+                    <h1 class="text-white">+ Notícias</h1>
                 </div>
             </div>
     
@@ -60,7 +60,7 @@
                                 <div class="col-10"></div>
                                 <div class="col-12 p-0">
                                     <a href="{{ route('post', $post->id) }}">
-                                        <img src="{{ asset('.' . $post->image) }}" alt="{{ $post->title }}" style="width: 370px;height: 300px;">
+                                        <img src="{{ asset('storage/' . $post->main_image) }}" alt="{{ $post->title }}" style="width: 370px;height: 300px;">
                                     </a>
                                 </div>
                                 <div class="col-12 title_image">

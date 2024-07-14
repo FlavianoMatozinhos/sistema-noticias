@@ -1,12 +1,21 @@
 @csrf 
 
 <p>
-    <label class="uppercase text-gray-700 text-xs">Imagem da Noticia</label>
+    <label class="uppercase text-gray-700 text-xs">Imagem Principal da Noticia</label>
     <span class="text-xs text-red-600">@error('image') {{ $message }} @enderror</span>
 </p>
 
 <p>
     <input type="file" name="image" class="rounded border-gray-200 w-full mb-4">
+</p>
+
+<p>
+    <label class="uppercase text-gray-700 text-xs">Imagens da Noticia</label>
+    <span class="text-xs text-red-600">@error('image') {{ $message }} @enderror</span>
+</p>
+
+<p>
+    <input type="file" name="images[]" class="rounded border-gray-200 w-full mb-4" multiple>
 </p>
 
 <p>
