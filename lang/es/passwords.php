@@ -13,10 +13,10 @@ return [
     |
     */
 
-    'reset' => '¡Su contraseña ha sido restablecida!',
-    'sent' => '¡Recordatorio de contraseña enviado!',
-    'token' => 'Este token de restablecimiento de contraseña es inválido.',
-    'user' => 'No se ha encontrado un usuario con esa dirección de correo.',
-    'throttled' => 'Por favor espere antes de volver a intentarlo.',
-    'password' => 'Las contraseñas deben tener al menos seis caracteres y coincidir con la confirmación.'
+    'reset' => '¡Sua contrasenha foi restabelecida!',
+    'sent' => '¡Registro de senha enviada!',
+    'token' => 'Este token de renovação de senha é inválido',
+    'user' => 'Não foi encontrado um usuário com esse endereço de correio.',
+    'throttled' => 'Por favor, espere antes de voltar a tentar.',
+    'password' => 'As senhas devem ter menos seis caracteres e coincidir com a confirmação.'
 ];

@@ -35,13 +35,15 @@
                             <i class="fa-brands fa-instagram"></i>
                         </a>
                         @auth 
-                            @if(auth()->user()->isAdmin)
+                            
                             <div class="dropdown nav-link instagram-icon col">
                                 <button class="btn btn_user dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fa-regular fa-user"></i>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{{ route('dashboard') }}">Dashboard</a></li>
+                                    @if(auth()->user()->isAdmin)
+                                        <li><a class="dropdown-item" href="{{ route('dashboard') }}">Dashboard</a></li>
+                                    @endif
                                     <li>
                                         <form method="POST" action="{{ route('logout') }}">
                                             @csrf
@@ -55,7 +57,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            @endif
+                            
                         @else 
                             <div class="dropdown nav-link instagram-icon col">
                                 <button class="btn btn_user dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -250,6 +252,21 @@
             quality.enabled(false);
         }
     }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        const inputs = document.querySelectorAll('.input');
+        let currentIndex = 0;
+    
+        function showNextSlide() {
+            inputs[currentIndex].checked = false;
+            currentIndex = (currentIndex + 1) % inputs.length;
+            inputs[currentIndex].checked = true;
+        }
+    
+        setInterval(showNextSlide, 5000);
+        });
     </script>
 </body>
 </html>
