@@ -3,8 +3,6 @@
       <div class=" flex items-center justify-between">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Posts') }}
-
-            
         </h2>
 
         <a class="bg-gray-800 text-white rounded px-4 py-2" href=" {{ route('posts.create') }}">Criar Noticia</a>
@@ -24,24 +22,19 @@
                                 <a href="{{route('posts.edit', $post) }}" class="text-indigo-600">Editar</a>
                            </td> 
                            <td class="px-6 py-4">
-                            
-                            <form action="{{route('posts.destroy', $post) }}" method="POST">
-                                @csrf 
-                                @method('DELETE')
-                                <input 
-                                    type="submit" 
-                                    value="Eliminar"
-                                    class="bg-gray-800 text-white rounded px-4 py-2"
-                                    onclick="return confirm('Estás seguro de eliminar el post? Esta acción es irreversible')" 
-                                     >
-                            </form>
-
-
+                                <form action="{{route('posts.destroy', $post) }}" method="POST">
+                                    @csrf 
+                                    @method('DELETE')
+                                    <input 
+                                        type="submit" 
+                                        value="Eliminar"
+                                        class="bg-gray-800 text-white rounded px-4 py-2"
+                                        onclick="return confirm('Estás seguro de eliminar el post? Esta acción es irreversible')" 
+                                        >
+                                </form>
                            </td> 
                         </tr>
                         @endforeach
-
-
                    </table>
 
                    {{ $posts->links() }}

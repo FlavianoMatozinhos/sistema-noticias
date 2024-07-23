@@ -11,7 +11,9 @@
     {{-- CSS --}}
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
-    <script src="https://cdn.tiny.cloud/1/yif52dkl8qftmxphntxceoce40ortglrm07rw60srkkeihtl/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <link rel="icon" href="{{ asset('images/choquei.png') }}" type="image/x-icon">
+
+    <script src="https://cdn.tiny.cloud/1/q5uay7bl3db8b12nyuw78p608w2whq7p3ynuzri3ef9l1hdb/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.theme.min.css">

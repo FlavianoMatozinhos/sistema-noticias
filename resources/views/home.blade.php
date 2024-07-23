@@ -20,7 +20,7 @@
                 </div>
             </div>
 
-            <div class="imagem_principal col-6">
+            <div class="imagem_principal container col-6">
                 <div class="row box">
                     <div class="col-2 padding">
                         <a href="{{ route('post', $latestPost->id) }}">
@@ -32,7 +32,14 @@
                         <img src="{{ asset('storage/' . $latestPost->main_image) }}" alt="Imagem Principal" class="img-fluid">
                     </div>
                     <div class="col-12 title_image">
-                        <h5 class="text-break text-truncate">{{ $latestPost->title }}</h5>
+                        <h5>{{ $latestPost->title }}</h5>
+                        <div class="slug_minimal mt-3">
+                            <p>{{ $latestPost->slug }}</p>
+
+                            <div class="bg-gray-800 py-2 rounded">
+                                <a href="{{ route('post', $latestPost->id) }}" class="btn btn-outline-dark">Saiba Mais</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -65,7 +72,7 @@
                                     <div class="col-10"></div>
                                     <div class="col-12 p-0">
                                         <a href="{{ route('post', $post->id) }}">
-                                            <img src="{{ asset('storage/' . $post->main_image) }}" alt="{{ $post->title }}" style="width: 370px;height: 300px;">
+                                            <img class="img_noticias" src="{{ asset('storage/' . $post->main_image) }}" alt="{{ $post->title }}" style="width: 100%;">
                                         </a>
                                     </div>
                                     <div class="col-12 title_image">
