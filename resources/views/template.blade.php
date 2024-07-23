@@ -33,7 +33,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent container">
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <li class="nav-item row align-items-center">
-                        <a class="nav-link col" href="https://www.instagram.com" target="_blank">
+                        <a class="nav-link col" href="https://www.instagram.com/choqueiconca/" target="_blank">
                             <i class="fa-brands fa-instagram"></i>
                         </a>
                         @auth 

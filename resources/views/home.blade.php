@@ -29,7 +29,9 @@
                     </div>
                     <div class="col-10"></div>
                     <div class="col-12 padding">
-                        <img src="{{ asset('storage/' . $latestPost->main_image) }}" alt="Imagem Principal" class="img-fluid">
+                        <a href="{{ route('post', $latestPost->id) }}">
+                            <img src="{{ asset('storage/' . $latestPost->main_image) }}" alt="Imagem Principal" class="img-fluid">
+                        </a>
                     </div>
                     <div class="col-12 title_image">
                         <h5>{{ $latestPost->title }}</h5>

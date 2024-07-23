@@ -129,7 +129,7 @@
       </div>
 
       <div class="col-2">
-        <a class="nav-link col" href="https://www.instagram.com" target="_blank">
+        <a class="nav-link col" href="https://www.instagram.com/choqueiconca/" target="_blank">
           <i class="fa-brands fa-instagram"></i>
         </a>
       </div>
