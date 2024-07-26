@@ -17,17 +17,17 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $pendingVideo = Post::where('status', 'processing')->first();
+        $pendingVideo = Post::where('status', 'processing')->first();
 
-        // if ($pendingVideo) {
-        //     $id =  $pendingVideo->id;
+        if ($pendingVideo) {
+            $id =  $pendingVideo->id;
 
-        //     $videoPath = 'videos/' . $pendingVideo->temporary_video;
+            $videoPath = 'videos/' . $pendingVideo->temporary_video;
 
-        //     $fileName = $pendingVideo->temporary_video;
+            $fileName = $pendingVideo->temporary_video;
 
-        //     $schedule->job(new ProcessVideoChunk($videoPath, $fileName, $id))->everyMinute();
-        // }
+            $schedule->job(new ProcessVideoChunk($videoPath, $fileName, $id))->everyMinute();
+        }
     }
 
     /**
